@@ -20,10 +20,6 @@ public class WeatherBean {
     private String high_temperature;
     //更新时间
     private String refreshtime;
-    //PM2.5
-    private String pm;
-    //空气质量
-    private String air;
     //湿度
     private String humidity;
     //体感温度

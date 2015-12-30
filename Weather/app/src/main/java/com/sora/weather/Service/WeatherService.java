@@ -2,16 +2,23 @@ package com.sora.weather.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Binder;
 import android.os.IBinder;
 import android.os.Message;
 import android.widget.Toast;
 
 import com.sora.weather.Bean.HoursWeatherBean;
+import com.sora.weather.Bean.PMBean;
 import com.sora.weather.Bean.WeatherBean;
 import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
 import com.thinkland.sdk.android.Parameters;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -23,8 +30,10 @@ public class WeatherService extends Service {
     private String city;
     //Weather Info
     private WeatherBean weatherBean = null;
-    private List<HoursWeatherBean> list = null;
-//    private WeatherServiceBinder binder = new WeatherServiceBinder();
+    private List<HoursWeatherBean> lists = null;
+    private PMBean pmBean = null;
+    //关联Service和Application
+    private WeatherServiceBinder binder = new WeatherServiceBinder();
 
     private final String tag = "Weather Service";
     private final int DELAYMILLIS = 30*60*1000;
@@ -34,9 +43,10 @@ public class WeatherService extends Service {
 
 
 
+    //返回binder 使得Service的引用可以通过返回的IBinder对象得到
     @Override
     public IBinder onBind(Intent intent) {
-        return null;
+        return binder;
     }
 
     @Override
@@ -102,9 +112,8 @@ public class WeatherService extends Service {
              */
             @Override
             public void onSuccess(int statusCode, String responseString) {
-                // TODO Auto-generated method stub
                 //解析Weather
-                parseWeather(responseString);
+                weatherBean = parseWeather(responseString);
                 //计数减少1
                 countDownLatch.countDown();
             }
@@ -114,7 +123,6 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFinish() {
-                // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_SHORT).show();
             }
 
@@ -125,7 +133,6 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFailure(int statusCode, String responseString, Throwable throwable) {
-                // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -155,9 +162,8 @@ public class WeatherService extends Service {
              */
             @Override
             public void onSuccess(int statusCode, String responseString) {
-                // TODO Auto-generated method stub
                 //解析每3小时的Weather
-                parseHoursWeather(responseString);
+                lists = parseHoursWeather(responseString);
                 //计数减少1
                 countDownLatch.countDown();
             }
@@ -167,7 +173,6 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFinish() {
-                // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_SHORT).show();
             }
 
@@ -178,7 +183,6 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFailure(int statusCode, String responseString, Throwable throwable) {
-                // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -200,17 +204,16 @@ public class WeatherService extends Service {
          * 第五个参数 接口请求的参数,键值对com.thinkland.sdk.android.Parameters类型; 第六个参数
          * 请求的回调方法,com.thinkland.sdk.android.DataCallBack;
          *
-         * url:"http://v.juhe.cn/weather/forecast3h"
+         * url:"http://web.juhe.cn:8080/environment/air/cityair"
          */
-        JuheData.executeWithAPI(getApplicationContext(), 1, "http://v.juhe.cn/weather/forecast3h", JuheData.GET, params, new DataCallBack() {
+        JuheData.executeWithAPI(getApplicationContext(), 1, "http://web.juhe.cn:8080/environment/air/cityair", JuheData.GET, params, new DataCallBack() {
             /**
              * 请求成功时调用的方法 statusCode为http状态码,responseString    *为请求返回数据.
              */
             @Override
             public void onSuccess(int statusCode, String responseString) {
-                // TODO Auto-generated method stub
-                //解析Weather
-                parseWeather(responseString);
+                //解析PM
+                pmBean = parsePM(responseString);
                 //计数减少1
                 countDownLatch.countDown();
             }
@@ -220,7 +223,6 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFinish() {
-                // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_SHORT).show();
             }
 
@@ -231,7 +233,6 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFailure(int statusCode, String responseString, Throwable throwable) {
-                // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), throwable.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -255,13 +256,68 @@ public class WeatherService extends Service {
 
 
     //解析Weather
-    private void parseWeather(String responseString) {
+    private WeatherBean parseWeather(String responseString) {
+        WeatherBean bean = null;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        JSONTokener jsonTokener = new JSONTokener(responseString);
+        try {
+            // 此时还未读取任何json文本 直接读取就是一个JSONObject对象
+            JSONObject json = (JSONObject) jsonTokener.nextValue();
+            int code = json.getInt("resultcode");
+            int error_code = json.getInt("error_code");
+            if (error_code == 0 && code == 200) {
+                bean = new WeatherBean();
+                JSONObject weatherJSON = json.getJSONArray("result").getJSONObject(0).getJSONObject("sk");
 
+                //"sk"
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("wind_direction")+weatherJSON.getString("wind_strength"));
+                bean.(weatherJSON.getString("humidity"));
+                bean.(weatherJSON.getString("time"));
+
+
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("temp"));
+                bean.(weatherJSON.getString("temp"));
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return bean;
     }
 
     //解析每3小时的Weather
-    private void parseHoursWeather(String responseString) {
+    private List<HoursWeatherBean> parseHoursWeather(String responseString) {
+        List<HoursWeatherBean> list = null;
 
+        return list;
+    }
+
+    //解析PM
+    private PMBean parsePM(String responseString) {
+        PMBean bean = null;
+        JSONTokener jsonTokener = new JSONTokener(responseString);
+        try {
+            // 此时还未读取任何json文本 直接读取就是一个JSONObject对象
+            JSONObject json = (JSONObject) jsonTokener.nextValue();
+            int code = json.getInt("resultcode");
+            int error_code = json.getInt("error_code");
+            if (error_code == 0 && code == 200) {
+                bean = new PMBean();
+                JSONObject pmJSON = json.getJSONArray("result").getJSONObject(0).getJSONObject("citynow");
+                bean.setPm(pmJSON.getString("AQI"));
+                bean.setAir(pmJSON.getString("quality"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return bean;
     }
 
 //    @Override
@@ -270,12 +326,13 @@ public class WeatherService extends Service {
 //        Log.v(tag,"onDestroy");
 //    }
 
-//    public class WeatherServiceBinder extends Binder{
-//
-//        public WeatherService getService(){
-//            return WeatherService.this;
-//        }
-//    }
+    //定义WeatherServiceBinder
+    public class WeatherServiceBinder extends Binder{
+
+        public WeatherService getService(){
+            return WeatherService.this;
+        }
+    }
 
 }
 
