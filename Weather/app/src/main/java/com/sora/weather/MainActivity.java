@@ -28,10 +28,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //设置上下文环境
+        mContext = this;
         initService();
     }
 
-    //启动Sercive
+    //启动Service
     private void initService() {
         //指定Service
         Intent intent = new Intent(mContext,WeatherService.class);
@@ -57,7 +59,11 @@ public class MainActivity extends AppCompatActivity {
     //解绑Service
     @Override
     protected void onDestroy() {
+        //解绑Service
         unbindService(conn);
+        //关闭当前页面正在进行的请求
+        //TODO 关闭请求位置是否正确不确定 可能报错
+//        JuheData.cancelRequests(mContext);
         super.onDestroy();
     }
 }

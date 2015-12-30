@@ -34,4 +34,6 @@ public class WeatherBean {
     private String uv_index;
     //穿衣指数
     private String dressing;
+
+
 }
