@@ -4,7 +4,7 @@
     <string name="time">2015-12-30 星期三</string>
     <string name="city">南京[切换]</string>
     <string name="temperature">9°</string>
-    <string name="refreshTime">[12:00更新]</string>
+    <string name="refreshtime">[12:00更新]</string>
     <string name="weather">晴 0°/12°</string>
     <string name="pm">PM2.5 : 288</string>
     <string name="humidity">湿度 : 57%</string>

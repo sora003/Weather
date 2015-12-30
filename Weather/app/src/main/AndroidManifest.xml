@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.thinkland.juheapi.openid"
-            android:value=""/>
+            android:value="JH6d0df5c5be4b9939fe25711ab781e3f5"/>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

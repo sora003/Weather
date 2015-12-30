@@ -62,7 +62,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tv_refreshTime"
-                android:text="@string/refreshTime"
+                android:text="@string/refreshtime"
                 android:textSize="16dp"
                 android:textColor="@color/white"
                 android:layout_toRightOf="@+id/tv_temperature"
