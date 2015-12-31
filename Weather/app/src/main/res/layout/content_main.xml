@@ -129,42 +129,43 @@
                 android:layout_below="@+id/tv_futuerhour"
                 android:layout_marginTop="15dp">
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center">
+                <!-- 取消显示 -->
+                <!--<RelativeLayout-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:gravity="center">-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_hour00"
-                        android:text="@string/hour"
-                        android:textSize="16dp"
-                        android:textColor="@color/white" />
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/tv_hour00"-->
+                        <!--android:text="@string/hour"-->
+                        <!--android:textSize="16dp"-->
+                        <!--android:textColor="@color/white" />-->
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/iv_weather00"
-                        android:src="@drawable/d00"
-                        android:layout_alignLeft="@+id/tv_hour00"
-                        android:layout_alignRight="@+id/tv_hour00"
-                        android:layout_below="@+id/tv_hour00"/>
+                    <!--<ImageView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/iv_weather00"-->
+                        <!--android:src="@drawable/d00"-->
+                        <!--android:layout_alignLeft="@+id/tv_hour00"-->
+                        <!--android:layout_alignRight="@+id/tv_hour00"-->
+                        <!--android:layout_below="@+id/tv_hour00"/>-->
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tv_temperature00"
-                        android:text="@string/temperature"
-                        android:textSize="16dp"
-                        android:textColor="@color/white"
-                        android:layout_alignLeft="@+id/tv_hour00"
-                        android:layout_alignRight="@+id/tv_hour00"
-                        android:gravity="center"
-                        android:layout_below="@id/iv_weather00"/>
+                    <!--<TextView-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:id="@+id/tv_temperature00"-->
+                        <!--android:text="@string/temperature"-->
+                        <!--android:textSize="16dp"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_alignLeft="@+id/tv_hour00"-->
+                        <!--android:layout_alignRight="@+id/tv_hour00"-->
+                        <!--android:gravity="center"-->
+                        <!--android:layout_below="@id/iv_weather00"/>-->
 
-                </RelativeLayout>
+                <!--</RelativeLayout>-->
 
                 <RelativeLayout
                     android:layout_width="wrap_content"

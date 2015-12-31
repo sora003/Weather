@@ -39,8 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_temperature;
     private TextView tv_refreshTime;
     private TextView tv_weather;
-    private TextView tv_hour00;
-    private TextView tv_temperature00;
+    //取消显示
+//    private TextView tv_hour00;
+//    private TextView tv_temperature00;
     private TextView tv_hour01;
     private TextView tv_temperature01;
     private TextView tv_hour02;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
 
     //ImageView控件
     private ImageView iv_weather;
-    private ImageView iv_weather00;
+//    private ImageView iv_weather00;
     private ImageView iv_weather01;
     private ImageView iv_weather02;
     private ImageView iv_weather03;
@@ -90,8 +91,8 @@ public class MainActivity extends AppCompatActivity {
         tv_temperature = (TextView) findViewById(R.id.tv_temperature);
         tv_refreshTime = (TextView) findViewById(R.id.tv_refreshTime);
         tv_weather = (TextView) findViewById(R.id.tv_weather);
-        tv_hour00 = (TextView) findViewById(R.id.tv_hour00);
-        tv_temperature00 = (TextView) findViewById(R.id.tv_temperature00);
+//        tv_hour00 = (TextView) findViewById(R.id.tv_hour00);
+//        tv_temperature00 = (TextView) findViewById(R.id.tv_temperature00);
         tv_hour01 = (TextView) findViewById(R.id.tv_hour01);
         tv_temperature01 = (TextView) findViewById(R.id.tv_temperature01);
         tv_hour02 = (TextView) findViewById(R.id.tv_hour02);
@@ -113,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
 
         //ImageView 初始化
         iv_weather = (ImageView) findViewById(R.id.iv_weather);
-        iv_weather00 = (ImageView) findViewById(R.id.iv_weather00);
+//        iv_weather00 = (ImageView) findViewById(R.id.iv_weather00);
         iv_weather01 = (ImageView) findViewById(R.id.iv_weather01);
         iv_weather02 = (ImageView) findViewById(R.id.iv_weather02);
         iv_weather03 = (ImageView) findViewById(R.id.iv_weather03);
@@ -146,14 +147,17 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void OnParserComplete(List<HoursWeatherBean> list, PMBean pmBean, WeatherBean weatherBean) {
                     //TODO Lists
+                    if (list != null && list.size() == 6) {
+                        setHoursWeatherView(list);
+                    }
 
                     //pmBean
-                    if (pmBean != null){
+                    if (pmBean != null) {
                         setPMView(pmBean);
                     }
 
                     //weatherBean
-                    if (weatherBean != null){
+                    if (weatherBean != null) {
                         setWeatherBean(weatherBean);
                     }
                 }
@@ -175,8 +179,33 @@ public class MainActivity extends AppCompatActivity {
 
     //设置Weather相关参数
     private void setWeatherBean(WeatherBean weatherBean) {
+        tv_time.setText(weatherBean.getTime());
+        tv_temperature.setText(weatherBean.getTemperature()+"°C");
+        tv_refreshTime.setText("["+weatherBean.getRefreshtime()+"更新]");
+        tv_weather.setText(weatherBean.getWeather()+" "+weatherBean.getTemperature_str());
+        tv_humidity.setText("湿度 : "+ weatherBean.getHumidity());
+        tv_wind.setText("风力风向 : "+weatherBean.getWind());
+        tv_uv_index.setText("紫外线指数 : "+weatherBean.getUv_index());
+        tv_dressing.setText("穿衣指数 : "+weatherBean.getDressing());
 
     }
+
+    //设置HoursWeather相关参数
+    private void setHoursWeatherView(List<HoursWeatherBean> list) {
+        tv_hour01.setText(list.get(0).getTime());
+        tv_temperature01.setText(list.get(0).getTemperature()+"°C");
+        tv_hour02.setText(list.get(1).getTime());
+        tv_temperature02.setText(list.get(1).getTemperature()+"°C");
+        tv_hour03.setText(list.get(2).getTime());
+        tv_temperature03.setText(list.get(2).getTemperature()+"°C");
+        tv_hour04.setText(list.get(3).getTime());
+        tv_temperature04.setText(list.get(3).getTemperature()+"°C");
+        tv_hour05.setText(list.get(4).getTime());
+        tv_temperature05.setText(list.get(4).getTemperature()+"°C");
+        tv_hour06.setText(list.get(5).getTime());
+        tv_temperature06.setText(list.get(5).getTemperature()+"°C");
+    }
+
 
     //解绑Service
     @Override
@@ -185,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         unbindService(conn);
         //关闭当前页面正在进行的请求
         //TODO 关闭请求位置是否正确不确定 可能报错
-//        JuheData.cancelRequests(mContext);
+        JuheData.cancelRequests(mContext);
         super.onDestroy();
     }
 }

@@ -14,11 +14,15 @@ import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
 import com.thinkland.sdk.android.Parameters;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
@@ -149,7 +153,7 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFinish() {
-                Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_SHORT).show();
+
             }
 
             /**
@@ -183,12 +187,18 @@ public class WeatherService extends Service {
          *
          * url:"http://v.juhe.cn/weather/forecast3h"
          */
-        JuheData.executeWithAPI(getApplicationContext(), 1, "http://v.juhe.cn/weather/forecast3h", JuheData.GET, params, new DataCallBack() {
+        JuheData.executeWithAPI(getApplicationContext(), 39, "http://v.juhe.cn/weather/forecast3h", JuheData.GET, params, new DataCallBack() {
             /**
              * 请求成功时调用的方法 statusCode为http状态码,responseString    *为请求返回数据.
              */
             @Override
             public void onSuccess(int statusCode, String responseString) {
+
+                //测试代码
+//                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+               System.out.println(responseString);
+
+
                 //解析每3小时的Weather
                 lists = parseHoursWeather(responseString);
                 //计数减少1
@@ -200,7 +210,7 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFinish() {
-                Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_SHORT).show();
+
             }
 
             /**
@@ -251,7 +261,7 @@ public class WeatherService extends Service {
              */
             @Override
             public void onFinish() {
-                Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_SHORT).show();
+
             }
 
             /**
@@ -287,7 +297,10 @@ public class WeatherService extends Service {
     //解析Weather
     private WeatherBean parseWeather(String responseString) {
         WeatherBean bean = null;
-        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        //2015-12-31 周四
+        SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd E");
+        //2015年12月31日周四
+        SimpleDateFormat format2 = new SimpleDateFormat("yyyy年MM月dd日E");
         try {
             // 创建JSONObject对象
             JSONObject json = new JSONObject(responseString);
@@ -304,7 +317,9 @@ public class WeatherService extends Service {
 
                 //"today"
                 JSONObject weatherJSON_t = json.getJSONObject("result").getJSONObject("today");
-                bean.setTime(weatherJSON_t.getString("date_y") + weatherJSON_t.getString("week"));
+                //转换时间格式
+                Date date = format2.parse(weatherJSON_t.getString("date_y") + weatherJSON_t.getString("week"));
+                bean.setTime(format1.format(date));
                 bean.setTemperature_str(weatherJSON_t.getString("temperature"));
                 bean.setWeather(weatherJSON_t.getString("weather"));
                 bean.setDressing(weatherJSON_t.getString("dressing_index"));
@@ -317,6 +332,8 @@ public class WeatherService extends Service {
 
             }
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
             e.printStackTrace();
         }
 
@@ -332,6 +349,55 @@ public class WeatherService extends Service {
     //解析每3小时的Weather
     private List<HoursWeatherBean> parseHoursWeather(String responseString) {
         List<HoursWeatherBean> list = null;
+        //20151231180000
+        SimpleDateFormat  format1 = new SimpleDateFormat("yyyyMMddHHmmss");
+        //18:00
+        SimpleDateFormat  format2 = new SimpleDateFormat("HH:mm");
+
+        Date date = new Date(System.currentTimeMillis());
+        try {
+            // 创建JSONObject对象       json.getJSONObject("result").getJSONObject("today").getJSONObject("weather_id")
+            JSONObject json = new JSONObject(responseString);
+            int code = json.getInt("resultcode");
+            if (code == 200) {
+                //初始化List
+                JSONArray jsonArray = json.getJSONArray("result");
+                list = new ArrayList<HoursWeatherBean>();
+                for (int i=0;i<jsonArray.length();i++){
+                    JSONObject hourJSON = jsonArray.getJSONObject(i);
+                    Date hourDate = format1.parse(hourJSON.getString("sfdate"));
+                    //
+                    if (!hourDate.after(date)){
+                        continue;
+                    }
+                    HoursWeatherBean bean = new HoursWeatherBean();
+                    bean.setWeather_id(hourJSON.getString("weatherid"));
+                    //获取的是最低温度
+                    //TODO 关于温度的计算方式 有待改进
+                    bean.setTemperature(hourJSON.getString("temp1"));
+                    bean.setTime(format2.format(hourDate));
+                    //添加进List
+                    list.add(bean);
+                    //设定List大小
+                    if (list.size() == 6){
+                        break;
+                    }
+                }
+
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        //测试代码
+//        for (int i=0;i<6;i++){
+//            System.out.println(list.get(i).getTime()+"  "+list.get(i).getWeather_id()+"  "+list.get(i).getTemperature());
+//        }
+
+
 
         return list;
     }
@@ -355,8 +421,8 @@ public class WeatherService extends Service {
         }
 
         //测试代码
-        System.out.println(bean.getPm());
-        System.out.println(bean.getAir());
+//        System.out.println(bean.getPm());
+//        System.out.println(bean.getAir());
 
 
         return bean;
