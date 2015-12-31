@@ -170,11 +170,12 @@
 
                 <!--</RelativeLayout>-->
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -192,7 +193,7 @@
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:gravity="center"
-                        android:layout_below="@+id/tv_hour01"/>
+                        android:paddingTop="10dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -201,18 +202,17 @@
                         android:text="@string/temperature"
                         android:textSize="16dp"
                         android:textColor="@color/white"
-                        android:layout_alignLeft="@+id/tv_hour01"
-                        android:layout_alignRight="@+id/tv_hour01"
-                        android:gravity="center"
-                        android:layout_below="@id/iv_weather01"/>
+                        android:paddingTop="10dp"
+                        android:gravity="center" />
 
-                </RelativeLayout>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -230,7 +230,7 @@
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:gravity="center"
-                        android:layout_below="@+id/tv_hour02"/>
+                        android:paddingTop="10dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -239,18 +239,17 @@
                         android:text="@string/temperature"
                         android:textSize="16dp"
                         android:textColor="@color/white"
-                        android:layout_alignLeft="@+id/tv_hour02"
-                        android:layout_alignRight="@+id/tv_hour02"
                         android:gravity="center"
-                        android:layout_below="@id/iv_weather02"/>
+                        android:paddingTop="10dp"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -268,7 +267,7 @@
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:gravity="center"
-                        android:layout_below="@+id/tv_hour03"/>
+                        android:paddingTop="10dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -277,18 +276,17 @@
                         android:text="@string/temperature"
                         android:textSize="16dp"
                         android:textColor="@color/white"
-                        android:layout_alignLeft="@+id/tv_hour03"
-                        android:layout_alignRight="@+id/tv_hour03"
                         android:gravity="center"
-                        android:layout_below="@id/iv_weather03"/>
+                        android:paddingTop="10dp"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -306,7 +304,7 @@
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:gravity="center"
-                        android:layout_below="@+id/tv_hour04"/>
+                        android:paddingTop="10dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -315,18 +313,17 @@
                         android:text="@string/temperature"
                         android:textSize="16dp"
                         android:textColor="@color/white"
-                        android:layout_alignLeft="@+id/tv_hour04"
-                        android:layout_alignRight="@+id/tv_hour04"
                         android:gravity="center"
-                        android:layout_below="@id/iv_weather04"/>
+                        android:paddingTop="10dp"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -344,7 +341,7 @@
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:gravity="center"
-                        android:layout_below="@+id/tv_hour05"/>
+                        android:paddingTop="10dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -353,19 +350,18 @@
                         android:text="@string/temperature"
                         android:textSize="16dp"
                         android:textColor="@color/white"
-                        android:layout_alignLeft="@+id/tv_hour05"
-                        android:layout_alignRight="@+id/tv_hour05"
                         android:gravity="center"
-                        android:layout_below="@id/iv_weather05"/>
+                        android:paddingTop="10dp"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:gravity="center">
+                    android:gravity="center"
+                    android:orientation="vertical">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -383,7 +379,7 @@
                         android:textColor="@color/white"
                         android:textSize="16dp"
                         android:gravity="center"
-                        android:layout_below="@+id/tv_hour06"/>
+                        android:paddingTop="10dp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -392,12 +388,10 @@
                         android:text="@string/temperature"
                         android:textSize="16dp"
                         android:textColor="@color/white"
-                        android:layout_alignLeft="@+id/tv_hour06"
-                        android:layout_alignRight="@+id/tv_hour06"
                         android:gravity="center"
-                        android:layout_below="@id/iv_weather06"/>
+                        android:paddingTop="10dp"/>
 
-                </RelativeLayout>
+                </LinearLayout>
 
             </LinearLayout>
 
