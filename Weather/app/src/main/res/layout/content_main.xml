@@ -419,7 +419,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/tv_pm2.5"
+                    android:id="@+id/tv_pm"
                     android:text="@string/pm"
                     android:textSize="16dp"
                     android:textColor="@color/white"
@@ -440,19 +440,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/humidity"
+                    android:id="@+id/tv_humidity"
                     android:text="@string/humidity"
-                    android:textSize="16dp"
-                    android:textColor="@color/white"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="10dp"/>
-
-                <!-- 体感温度-->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/tv_felt_temperature"
-                    android:text="@string/felt_temperature"
                     android:textSize="16dp"
                     android:textColor="@color/white"
                     android:paddingLeft="16dp"

@@ -34,6 +34,7 @@ public class WeatherService extends Service {
     private PMBean pmBean = null;
     //关联Service和Application
     private WeatherServiceBinder binder = new WeatherServiceBinder();
+    private OnParserCallBack callBack;
 
     private final String tag = "Weather Service";
     private final int DELAYMILLIS = 30*60*1000;
@@ -61,6 +62,21 @@ public class WeatherService extends Service {
 //        return super.onStartCommand(intent, flags, startId);
 //    }
 
+
+    //定义接口 为binder访问service服务
+    public interface OnParserCallBack{
+        public void OnParserComplete(List<HoursWeatherBean> list,PMBean pmBean,WeatherBean weatherBean);
+    }
+
+    public void setCallBack(OnParserCallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public void removeCallBack() {
+        callBack = null;
+    }
+
+    //Handler
     android.os.Handler handler = new android.os.Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -71,9 +87,13 @@ public class WeatherService extends Service {
                     sendEmptyMessageDelayed(REPEAT_MSG,DELAYMILLIS);
                     break;
                 case CALLBACK_SUCCESS:
-                    //TODO 将WeatherBean和list返回给MainActivity
+                    //将WeatherBean和list返回给MainActivity
+                    if (callBack != null){
+                        callBack.OnParserComplete(lists,pmBean,weatherBean);
+                    }
                     break;
                 case CALLBACK_ERROR:
+                    //返回数据失败
                     Toast.makeText(getApplicationContext(), "loading error", Toast.LENGTH_SHORT).show();
                     break;
                 default:
@@ -86,6 +106,7 @@ public class WeatherService extends Service {
         //构造同步计数器 确保线程执行顺序
         final CountDownLatch countDownLatch = new CountDownLatch(3);
 
+        //查询Weather相关参数
         //请求参数
         Parameters params = new Parameters();
         /**
@@ -106,12 +127,17 @@ public class WeatherService extends Service {
          *
          * url:http://v.juhe.cn/weather/index
          */
-        JuheData.executeWithAPI(getApplicationContext(), 1, "http://v.juhe.cn/weather/index", JuheData.GET, params, new DataCallBack() {
+        JuheData.executeWithAPI(getApplicationContext(), 39, "http://v.juhe.cn/weather/index", JuheData.GET, params, new DataCallBack() {
             /**
              * 请求成功时调用的方法 statusCode为http状态码,responseString    *为请求返回数据.
              */
             @Override
             public void onSuccess(int statusCode, String responseString) {
+
+                //测试代码
+//                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+//                System.out.println(responseString);
+
                 //解析Weather
                 weatherBean = parseWeather(responseString);
                 //计数减少1
@@ -137,6 +163,7 @@ public class WeatherService extends Service {
             }
         });
 
+        //查询未来每3小时天气相关参数
         //请求参数
         params = new Parameters();
         /**
@@ -188,6 +215,7 @@ public class WeatherService extends Service {
         });
 
 
+        //查询PM相关参数
         //请求参数
         params = new Parameters();
         /**
@@ -206,7 +234,7 @@ public class WeatherService extends Service {
          *
          * url:"http://web.juhe.cn:8080/environment/air/cityair"
          */
-        JuheData.executeWithAPI(getApplicationContext(), 1, "http://web.juhe.cn:8080/environment/air/cityair", JuheData.GET, params, new DataCallBack() {
+        JuheData.executeWithAPI(getApplicationContext(), 33, "http://web.juhe.cn:8080/environment/air/cityair", JuheData.GET, params, new DataCallBack() {
             /**
              * 请求成功时调用的方法 statusCode为http状态码,responseString    *为请求返回数据.
              */
@@ -242,6 +270,7 @@ public class WeatherService extends Service {
             @Override
             public void run() {
                 try {
+                    //等待获取数据操作完成
                     countDownLatch.await();
                     //向Handler发送线程运行成功消息
                     handler.sendEmptyMessage(CALLBACK_SUCCESS);
@@ -259,36 +288,44 @@ public class WeatherService extends Service {
     private WeatherBean parseWeather(String responseString) {
         WeatherBean bean = null;
         SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
-        JSONTokener jsonTokener = new JSONTokener(responseString);
         try {
-            // 此时还未读取任何json文本 直接读取就是一个JSONObject对象
-            JSONObject json = (JSONObject) jsonTokener.nextValue();
+            // 创建JSONObject对象
+            JSONObject json = new JSONObject(responseString);
             int code = json.getInt("resultcode");
-            int error_code = json.getInt("error_code");
-            if (error_code == 0 && code == 200) {
+            if (code == 200) {
                 bean = new WeatherBean();
-                JSONObject weatherJSON = json.getJSONArray("result").getJSONObject(0).getJSONObject("sk");
 
                 //"sk"
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("wind_direction")+weatherJSON.getString("wind_strength"));
-                bean.(weatherJSON.getString("humidity"));
-                bean.(weatherJSON.getString("time"));
+                JSONObject weatherJSON_s = json.getJSONObject("result").getJSONObject("sk");
+                bean.setTemperature(weatherJSON_s.getString("temp"));
+                bean.setWind(weatherJSON_s.getString("wind_direction") + weatherJSON_s.getString("wind_strength"));
+                bean.setHumidity(weatherJSON_s.getString("humidity"));
+                bean.setRefreshtime(weatherJSON_s.getString("time"));
 
+                //"today"
+                JSONObject weatherJSON_t = json.getJSONObject("result").getJSONObject("today");
+                bean.setTime(weatherJSON_t.getString("date_y") + weatherJSON_t.getString("week"));
+                bean.setTemperature_str(weatherJSON_t.getString("temperature"));
+                bean.setWeather(weatherJSON_t.getString("weather"));
+                bean.setDressing(weatherJSON_t.getString("dressing_index"));
+                bean.setUv_index(weatherJSON_t.getString("uv_index"));
 
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("temp"));
-                bean.(weatherJSON.getString("temp"));
+                //"today"-"weather_id"
+                JSONObject weatherJSON_w = json.getJSONObject("result").getJSONObject("today").getJSONObject("weather_id");
+                bean.setWeather_id1(weatherJSON_w.getString("fa"));
+                bean.setWeather_id2(weatherJSON_w.getString("fb"));
 
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+
+        //测试代码
+//        System.out.println(bean.getTemperature_str());
+//        System.out.println(bean.getWind());
+
+
         return bean;
     }
 
@@ -302,10 +339,9 @@ public class WeatherService extends Service {
     //解析PM
     private PMBean parsePM(String responseString) {
         PMBean bean = null;
-        JSONTokener jsonTokener = new JSONTokener(responseString);
         try {
-            // 此时还未读取任何json文本 直接读取就是一个JSONObject对象
-            JSONObject json = (JSONObject) jsonTokener.nextValue();
+            // 创建JSONObject对象
+            JSONObject json = new JSONObject(responseString);
             int code = json.getInt("resultcode");
             int error_code = json.getInt("error_code");
             if (error_code == 0 && code == 200) {
@@ -317,6 +353,12 @@ public class WeatherService extends Service {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        //测试代码
+        System.out.println(bean.getPm());
+        System.out.println(bean.getAir());
+
+
         return bean;
     }
 
