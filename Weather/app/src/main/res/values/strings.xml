@@ -16,4 +16,5 @@
     <string name="wind">风向风力 : 东风5级</string>
     <string name="uv_index">紫外线指数 : 中等</string>
     <string name="dressing">穿衣指数 : 较冷</string>
+    <string name="space">_</string>
 </resources>

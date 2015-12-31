@@ -78,14 +78,16 @@
             android:layout_below="@+id/layout_01_02"
             android:layout_marginTop="15dp">
 
-            <ImageView
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/iv_weather"
-                android:src="@drawable/d00"
-                android:layout_alignTop="@+id/tv_weather"
+                android:text="@string/space"
+                android:textColor="@color/white"
+                android:textSize="20dp"
                 android:layout_alignBottom="@+id/tv_weather"
-                android:layout_toLeftOf="@+id/tv_weather"/>
+                android:layout_toLeftOf="@+id/tv_weather"
+                android:paddingRight="10dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -144,11 +146,12 @@
                         <!--android:textSize="16dp"-->
                         <!--android:textColor="@color/white" />-->
 
-                    <!--<ImageView-->
+                    <!--<TextView-->
                         <!--android:layout_width="wrap_content"-->
                         <!--android:layout_height="wrap_content"-->
                         <!--android:id="@+id/iv_weather00"-->
-                        <!--android:src="@drawable/d00"-->
+                        <!--android:text="@string/space"-->
+                        <!--android:textColor="@color/white"-->
                         <!--android:layout_alignLeft="@+id/tv_hour00"-->
                         <!--android:layout_alignRight="@+id/tv_hour00"-->
                         <!--android:layout_below="@+id/tv_hour00"/>-->
@@ -181,13 +184,14 @@
                         android:textSize="16dp"
                         android:textColor="@color/white" />
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/iv_weather01"
-                        android:src="@drawable/d00"
-                        android:layout_alignLeft="@+id/tv_hour01"
-                        android:layout_alignRight="@+id/tv_hour01"
+                        android:text="@string/space"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:gravity="center"
                         android:layout_below="@+id/tv_hour01"/>
 
                     <TextView
@@ -218,13 +222,14 @@
                         android:textSize="16dp"
                         android:textColor="@color/white" />
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/iv_weather02"
-                        android:src="@drawable/d00"
-                        android:layout_alignLeft="@+id/tv_hour02"
-                        android:layout_alignRight="@+id/tv_hour02"
+                        android:text="@string/space"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:gravity="center"
                         android:layout_below="@+id/tv_hour02"/>
 
                     <TextView
@@ -255,13 +260,14 @@
                         android:textSize="16dp"
                         android:textColor="@color/white" />
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/iv_weather03"
-                        android:src="@drawable/d00"
-                        android:layout_alignLeft="@+id/tv_hour03"
-                        android:layout_alignRight="@+id/tv_hour03"
+                        android:text="@string/space"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:gravity="center"
                         android:layout_below="@+id/tv_hour03"/>
 
                     <TextView
@@ -292,13 +298,14 @@
                         android:textSize="16dp"
                         android:textColor="@color/white" />
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/iv_weather04"
-                        android:src="@drawable/d00"
-                        android:layout_alignLeft="@+id/tv_hour04"
-                        android:layout_alignRight="@+id/tv_hour04"
+                        android:text="@string/space"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:gravity="center"
                         android:layout_below="@+id/tv_hour04"/>
 
                     <TextView
@@ -329,13 +336,14 @@
                         android:textSize="16dp"
                         android:textColor="@color/white" />
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/iv_weather05"
-                        android:src="@drawable/d00"
-                        android:layout_alignLeft="@+id/tv_hour05"
-                        android:layout_alignRight="@+id/tv_hour05"
+                        android:text="@string/space"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:gravity="center"
                         android:layout_below="@+id/tv_hour05"/>
 
                     <TextView
@@ -367,13 +375,14 @@
                         android:textSize="16dp"
                         android:textColor="@color/white" />
 
-                    <ImageView
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/iv_weather06"
-                        android:src="@drawable/d00"
-                        android:layout_alignLeft="@+id/tv_hour06"
-                        android:layout_alignRight="@+id/tv_hour06"
+                        android:text="@string/space"
+                        android:textColor="@color/white"
+                        android:textSize="16dp"
+                        android:gravity="center"
                         android:layout_below="@+id/tv_hour06"/>
 
                     <TextView

@@ -196,7 +196,7 @@ public class WeatherService extends Service {
 
                 //测试代码
 //                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
-               System.out.println(responseString);
+//               System.out.println(responseString);
 
 
                 //解析每3小时的Weather

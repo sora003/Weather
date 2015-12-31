@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Typeface;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -14,7 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
 
     private Context mContext;
     private WeatherService weatherService;
+
+    //字体设置
+    Typeface font;
+
 
     //TextView 控件
     private TextView tv_time;
@@ -61,15 +66,15 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_uv_index;
     private TextView tv_dressing;
 
-    //ImageView控件
-    private ImageView iv_weather;
-//    private ImageView iv_weather00;
-    private ImageView iv_weather01;
-    private ImageView iv_weather02;
-    private ImageView iv_weather03;
-    private ImageView iv_weather04;
-    private ImageView iv_weather05;
-    private ImageView iv_weather06;
+    //Weather Icon
+    private TextView iv_weather;
+//    private TextView iv_weather00;
+    private TextView iv_weather01;
+    private TextView iv_weather02;
+    private TextView iv_weather03;
+    private TextView iv_weather04;
+    private TextView iv_weather05;
+    private TextView iv_weather06;
 
 
     @Override
@@ -84,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化参数
     private void init() {
-
+        font = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
         //TextView 控件初始化
         tv_time = (TextView) findViewById(R.id.tv_time);
         tv_city = (TextView) findViewById(R.id.tv_city);
@@ -112,15 +117,15 @@ public class MainActivity extends AppCompatActivity {
         tv_uv_index = (TextView) findViewById(R.id.tv_uv_index);
         tv_dressing = (TextView) findViewById(R.id.tv_dressing);
 
-        //ImageView 初始化
-        iv_weather = (ImageView) findViewById(R.id.iv_weather);
-//        iv_weather00 = (ImageView) findViewById(R.id.iv_weather00);
-        iv_weather01 = (ImageView) findViewById(R.id.iv_weather01);
-        iv_weather02 = (ImageView) findViewById(R.id.iv_weather02);
-        iv_weather03 = (ImageView) findViewById(R.id.iv_weather03);
-        iv_weather04 = (ImageView) findViewById(R.id.iv_weather04);
-        iv_weather05 = (ImageView) findViewById(R.id.iv_weather05);
-        iv_weather06 = (ImageView) findViewById(R.id.iv_weather06);
+        //TextView 初始化
+        iv_weather = (TextView) findViewById(R.id.iv_weather);
+//        iv_weather00 = (TextView) findViewById(R.id.iv_weather00);
+        iv_weather01 = (TextView) findViewById(R.id.iv_weather01);
+        iv_weather02 = (TextView) findViewById(R.id.iv_weather02);
+        iv_weather03 = (TextView) findViewById(R.id.iv_weather03);
+        iv_weather04 = (TextView) findViewById(R.id.iv_weather04);
+        iv_weather05 = (TextView) findViewById(R.id.iv_weather05);
+        iv_weather06 = (TextView) findViewById(R.id.iv_weather06);
 
     }
 
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         //启动WeatherService
         startService(intent);
         //绑定Service
-        bindService(intent,conn,Context.BIND_AUTO_CREATE);
+        bindService(intent, conn, Context.BIND_AUTO_CREATE);
     }
 
     //ServiceConnection 与Service交互
@@ -188,25 +193,182 @@ public class MainActivity extends AppCompatActivity {
         tv_uv_index.setText("紫外线指数 : "+weatherBean.getUv_index());
         tv_dressing.setText("穿衣指数 : "+weatherBean.getDressing());
 
+        setWeather_Icon(iv_weather, weatherBean.getWeather_id1());
+
     }
 
     //设置HoursWeather相关参数
     private void setHoursWeatherView(List<HoursWeatherBean> list) {
         tv_hour01.setText(list.get(0).getTime());
         tv_temperature01.setText(list.get(0).getTemperature()+"°C");
+        setWeather_Icon(iv_weather01, list.get(0).getWeather_id());
+
         tv_hour02.setText(list.get(1).getTime());
         tv_temperature02.setText(list.get(1).getTemperature()+"°C");
+        setWeather_Icon(iv_weather02, list.get(1).getWeather_id());
+
         tv_hour03.setText(list.get(2).getTime());
         tv_temperature03.setText(list.get(2).getTemperature()+"°C");
+        setWeather_Icon(iv_weather03, list.get(2).getWeather_id());
+
         tv_hour04.setText(list.get(3).getTime());
         tv_temperature04.setText(list.get(3).getTemperature()+"°C");
+        setWeather_Icon(iv_weather04, list.get(3).getWeather_id());
+
         tv_hour05.setText(list.get(4).getTime());
         tv_temperature05.setText(list.get(4).getTemperature()+"°C");
+        setWeather_Icon(iv_weather05, list.get(4).getWeather_id());
+
         tv_hour06.setText(list.get(5).getTime());
         tv_temperature06.setText(list.get(5).getTemperature()+"°C");
+        setWeather_Icon(iv_weather06, list.get(5).getWeather_id());
+
     }
 
+    //设置Weather_Icon
+    private void setWeather_Icon(TextView tv, String weather_id) {
+        switch (weather_id){
+            //晴
+            case ("00"):
+                tv.setText(R.string.wi_day_sunny);
+                break;
+            //多云
+            case ("01"):
+                tv.setText(R.string.wi_cloudy);
+                break;
+            //阴
+            case ("02"):
+                tv.setText(R.string.wi_day_haze);
+                break;
+            //阵雨
+            case ("03"):
+                tv.setText(R.string.wi_day_hail);
+                break;
+            //雷阵雨
+            case ("04"):
+                tv.setText(R.string.wi_day_lightning);
+                break;
+            //雷阵雨伴有冰雹
+            case ("05"):
+                tv.setText(R.string.wi_day_snow_thunderstorm);
+                break;
+            //雨夹雪
+            case ("06"):
+                tv.setText(R.string.wi_sleet);
+                break;
+            //小雨
+            case ("07"):
+                tv.setText(R.string.wi_sprinkle);
+                break;
+            //中雨
+            case ("08"):
+                tv.setText(R.string.wi_showers);
+                break;
+            //大雨
+            case ("09"):
+                tv.setText(R.string.wi_rain);
+                break;
+            //暴雨
+            case ("10"):
+                tv.setText(R.string.wi_hail);
+                break;
+            //大暴雨
+            case ("11"):
+                tv.setText(R.string.wi_storm_showers);
+                break;
+            //特大暴雨
+            case ("12"):
+                tv.setText(R.string.wi_thunderstorm);
+                break;
+            //阵雪
+            case ("13"):
+                tv.setText(R.string.wi_day_snow);
+                break;
+            //小雪
+            case ("14"):
+                tv.setText(R.string.wi_day_snow);
+                break;
+            //中雪
+            case ("15"):
+                tv.setText(R.string.wi_snow);
+                break;
+            //大雪
+            case ("16"):
+                tv.setText(R.string.wi_snow);
+                break;
+            //暴雪
+            case ("17"):
+                tv.setText(R.string.wi_snow);
+                break;
+            //雾
+            case ("18"):
+                tv.setText(R.string.wi_fog);
+                break;
+            //冻雨
+            case ("19"):
+                tv.setText(R.string.wi_rain_mix);
+                break;
+            //沙尘暴
+            case ("20"):
+                tv.setText(R.string.wi_sandstorm);
+                break;
+            //小雨-中雨
+            case ("21"):
+                tv.setText(R.string.wi_showers);
+                break;
+            //中雨-大雨
+            case ("22"):
+                tv.setText(R.string.wi_rain);
+                break;
+            //大雨-暴雨
+            case ("23"):
+                tv.setText(R.string.wi_hail);
+                break;
+            //暴雨-大暴雨
+            case ("24"):
+                tv.setText(R.string.wi_storm_showers);
+                break;
+            //大暴雨-特大暴雨
+            case ("25"):
+                tv.setText(R.string.wi_thunderstorm);
+                break;
+            //小雪-中雪
+            case ("26"):
+                tv.setText(R.string.wi_day_snow);
+                break;
+            //中雪-大雪
+            case ("27"):
+                tv.setText(R.string.wi_snow);
+                break;
+            //大雪-暴雪
+            case ("28"):
+                tv.setText(R.string.wi_snow);
+                break;
+            //浮尘
+            case ("29"):
+                tv.setText(R.string.wi_dust);
+                break;
+            //扬沙
+            case ("30"):
+                tv.setText(R.string.wi_dust);
+                break;
+            //强沙尘暴
+            case ("31"):
+                tv.setText(R.string.wi_sandstorm);
+                break;
+            //霾
+            case ("53"):
+                tv.setText(R.string.wi_day_sunny);
+                break;
+            default:
+                break;
 
+        }
+
+        //设置字体
+        tv.setTypeface(font);
+    }
+    
     //解绑Service
     @Override
     protected void onDestroy() {
