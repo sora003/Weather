@@ -168,6 +168,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             });
 
+
+            weatherService.getCityWeather();
+
         }
 
         @Override

@@ -106,7 +106,7 @@ public class WeatherService extends Service {
         }
     };
 
-    private void getCityWeather() {
+    public void getCityWeather() {
         //构造同步计数器 确保线程执行顺序
         final CountDownLatch countDownLatch = new CountDownLatch(3);
 

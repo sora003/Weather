@@ -10,7 +10,7 @@
     <string name="humidity">湿度 : 57%</string>
     <string name="air">空气质量 : 中度污染</string>
     <string name="hour">现在</string>
-    <string name="futurehour">未来18小时温度 :</string>
+    <string name="futurehour">未来18小时天气 :</string>
     <string name="info">详细信息 :</string>
     <string name="felt_temperature">体感温度 : 10°</string>
     <string name="wind">风向风力 : 东风5级</string>
