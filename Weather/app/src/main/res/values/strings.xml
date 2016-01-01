@@ -17,4 +17,6 @@
     <string name="uv_index">紫外线指数 : 中等</string>
     <string name="dressing">穿衣指数 : 较冷</string>
     <string name="space">_</string>
+    <string name="back"><![CDATA[<--]]></string>
+    <string name="citySelect">城市选择</string>
 </resources>

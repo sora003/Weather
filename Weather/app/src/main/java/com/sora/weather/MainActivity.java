@@ -127,6 +127,13 @@ public class MainActivity extends AppCompatActivity {
         iv_weather05 = (TextView) findViewById(R.id.iv_weather05);
         iv_weather06 = (TextView) findViewById(R.id.iv_weather06);
 
+        //设置city选择的点击监听事件
+        tv_city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(mContext,CityActivity.class),1);
+            }
+        });
     }
 
 
