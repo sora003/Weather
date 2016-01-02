@@ -51,27 +51,21 @@ public class CityActivity extends AppCompatActivity {
         //读取App数据 导入存储的CityList
 
         //测试代码
-        List<String> testList = new ArrayList<>();
-        testList.add("无锡");
-        testList.add("大浦");
-        testList.add("上海");
-        testList.add("北京");
-        testList.add("南京");
-        testList.add("重庆");
-        showCityList(testList);
-        list = testList;
+//        List<String> testList = new ArrayList<>();
+//        testList.add("无锡");
+//        testList.add("大浦");
+//        testList.add("上海");
+//        testList.add("北京");
+//        testList.add("南京");
+//        testList.add("重庆");
+//        showCityList(testList);
+//        list = testList;
 
 
         //TODO 下拉刷新从网上获取城市数据 获取最新的CityList
-        //耗时操作 采用线程处理
-//        new Thread(){
-//            @Override
-//            public void run() {
-//                getCityList();
-//            }
-//        }.start();
+        getCityList();
 
-        //ListView 事件监听
+        //ListView 点击事件监听
         lv_city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -86,16 +80,16 @@ public class CityActivity extends AppCompatActivity {
     }
 
 
-    Handler handler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case CITY_GETED:
-                    showCityList(list);
-                    break;
-            };
-        }
-    };
+//    Handler handler = new Handler(){
+//        @Override
+//        public void handleMessage(Message msg) {
+//            switch (msg.what){
+//                case CITY_GETED:
+//                    showCityList(list);
+//                    break;
+//            };
+//        }
+//    };
 
 
     //获取历史数据
@@ -114,21 +108,22 @@ public class CityActivity extends AppCompatActivity {
         /**
          * 请求参数说明
          *  	名称 	类型 	必填 	说明
-         *city	string 	Y 	城市名或城市ID，如："苏州"，需要utf8 urlencode
+         *dtype string 	N 	返回数据格式：json或xml,默认json
          *key 	string 	Y 	你申请的key
          *
          */
-        //TODO
-//        params.add("city", city);
+
+
+
 
         /**
          * 请求的方法 参数: 第一个参数 当前请求的context 第二个参数 接口id 第三二个参数 接口请求的url 第四个参数 接口请求的方式
          * 第五个参数 接口请求的参数,键值对com.thinkland.sdk.android.Parameters类型; 第六个参数
          * 请求的回调方法,com.thinkland.sdk.android.DataCallBack;
          *
-         * url:"http://web.juhe.cn:8080/environment/air/cityair"
+         * url:http://v.juhe.cn/weather/citys
          */
-        JuheData.executeWithAPI(getApplicationContext(), 33, "http://web.juhe.cn:8080/environment/air/cityair", JuheData.GET, params, new DataCallBack() {
+        JuheData.executeWithAPI(getApplicationContext(), 39, "http://v.juhe.cn/weather/citys", JuheData.GET, params, new DataCallBack() {
             /**
              * 请求成功时调用的方法 statusCode为http状态码,responseString    *为请求返回数据.
              */
@@ -136,8 +131,8 @@ public class CityActivity extends AppCompatActivity {
             public void onSuccess(int statusCode, String responseString) {
                 //解析城市列表
                 list = parseCities(responseString);
-                //向handler传值 更新UI
-                handler.sendEmptyMessage(CITY_GETED);
+                //更新界面
+                showCityList(list);
             }
 
             /**
@@ -200,8 +195,8 @@ public class CityActivity extends AppCompatActivity {
         lv_city = (ListView) findViewById(R.id.lv_ity);
 
         tv_back = (TextView) findViewById(R.id.tv_back);
-        //TODO
-//        tv_back.setText(R.string.i);
+        //设置返回按钮
+        tv_back.setText(R.string.wi_direction_left);
 
 
     }
