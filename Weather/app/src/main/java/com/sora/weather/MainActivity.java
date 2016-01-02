@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private WeatherService weatherService;
 
     //字体设置
-    Typeface font;
+    private Typeface font;
 
 
     //TextView 控件
@@ -89,6 +89,7 @@ public class MainActivity extends AppCompatActivity {
 
     //初始化参数
     private void init() {
+
         font = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
         //TextView 控件初始化
         tv_time = (TextView) findViewById(R.id.tv_time);
@@ -135,6 +136,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
 
     //启动Service
@@ -378,7 +381,17 @@ public class MainActivity extends AppCompatActivity {
         //设置字体
         tv.setTypeface(font);
     }
-    
+
+
+    //Activity的参数传递
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 1 && resultCode ==1){
+            String city = data.getStringExtra("city");
+            weatherService.getCityWeather(city);
+        };
+    }
+
     //解绑Service
     @Override
     protected void onDestroy() {

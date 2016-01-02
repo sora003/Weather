@@ -18,7 +18,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/tv_button"
+            android:id="@+id/tv_back"
             android:textColor="@color/white"
             android:textSize="30dp"
             android:text="@string/back"
@@ -49,7 +49,7 @@
     <ListView
         android:id="@+id/lv_ity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
 
 </LinearLayout>

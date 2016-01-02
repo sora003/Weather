@@ -29,11 +29,13 @@
             </intent-filter>
         </activity>
 
+
         <activity
             android:name=".CityActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
+
 
         <service android:name=".Service.WeatherService"/>
     </application>
