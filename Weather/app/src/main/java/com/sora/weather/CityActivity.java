@@ -49,15 +49,27 @@ public class CityActivity extends AppCompatActivity {
         setContentView(R.layout.activity_city);
         init();
         //读取App数据 导入存储的CityList
-        showCityList(getHistoryCityList());
+
+        //测试代码
+        List<String> testList = new ArrayList<>();
+        testList.add("无锡");
+        testList.add("大浦");
+        testList.add("上海");
+        testList.add("北京");
+        testList.add("南京");
+        testList.add("重庆");
+        showCityList(testList);
+        list = testList;
+
+
         //TODO 下拉刷新从网上获取城市数据 获取最新的CityList
         //耗时操作 采用线程处理
-        new Thread(){
-            @Override
-            public void run() {
-                getCityList();
-            }
-        }.start();
+//        new Thread(){
+//            @Override
+//            public void run() {
+//                getCityList();
+//            }
+//        }.start();
 
         //ListView 事件监听
         lv_city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -122,8 +134,9 @@ public class CityActivity extends AppCompatActivity {
              */
             @Override
             public void onSuccess(int statusCode, String responseString) {
-                //TODO 解析城市列表 并显示到界面
+                //解析城市列表
                 list = parseCities(responseString);
+                //向handler传值 更新UI
                 handler.sendEmptyMessage(CITY_GETED);
             }
 
@@ -183,6 +196,8 @@ public class CityActivity extends AppCompatActivity {
     private void init() {
         //设置字体
         font = Typeface.createFromAsset(getAssets(), "fonts/weathericons-regular-webfont.ttf");
+
+        lv_city = (ListView) findViewById(R.id.lv_ity);
 
         tv_back = (TextView) findViewById(R.id.tv_back);
         //TODO

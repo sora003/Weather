@@ -46,7 +46,7 @@ public class CityListAdapter extends BaseAdapter {
         ViewHolder viewHolder = null;
         View view = null;
         if (convertView == null || convertView.getTag() == null){
-            view = layoutInflater.inflate(R.layout.activity_city,null);
+            view = layoutInflater.inflate(R.layout.item_city_list,null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         }
@@ -55,7 +55,8 @@ public class CityListAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        viewHolder.tv_city.setText(getItem(position).toString());
+        //TODO
+        viewHolder.tv_city.setText((CharSequence) getItem(position));
 
         return view;
     }
@@ -65,7 +66,7 @@ public class CityListAdapter extends BaseAdapter {
 
         public ViewHolder(View view) {
 
-            this.tv_city = (TextView) view.findViewById(R.id.tv_city);
+            this.tv_city = (TextView) view.findViewById(R.id.tv_city_i);
 
         }
     }

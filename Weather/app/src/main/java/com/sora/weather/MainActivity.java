@@ -389,6 +389,7 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 1 && resultCode ==1){
             String city = data.getStringExtra("city");
             weatherService.getCityWeather(city);
+            tv_city.setText(city+"[切换]");
         };
     }
 
