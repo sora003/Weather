@@ -10,8 +10,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Context mContext;
     private WeatherService weatherService;
+    private Intent intent_Service;
 
     //字体设置
     private Typeface font;
@@ -77,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
     private TextView iv_weather06;
 
 
+    //Layout
+    private SwipeRefreshLayout swipeLayout;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +92,27 @@ public class MainActivity extends AppCompatActivity {
         mContext = this;
         init();
         initService();
+        initListener();
+    }
+
+    private void initListener() {
+        //设置city选择的点击监听事件
+        tv_city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(new Intent(mContext, CityActivity.class), 1);
+            }
+        });
+
+        //设置下拉刷新 的监听
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(false);
+                weatherService.getCityWeather();
+            }
+        });
+
     }
 
     //初始化参数
@@ -128,13 +156,13 @@ public class MainActivity extends AppCompatActivity {
         iv_weather05 = (TextView) findViewById(R.id.iv_weather05);
         iv_weather06 = (TextView) findViewById(R.id.iv_weather06);
 
-        //设置city选择的点击监听事件
-        tv_city.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivityForResult(new Intent(mContext,CityActivity.class),1);
-            }
-        });
+
+        //Layout初始化
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container_main);
+        swipeLayout.setColorSchemeColors(android.R.color.holo_blue_bright,
+                android.R.color.holo_green_light,
+                android.R.color.holo_orange_light,
+                android.R.color.holo_red_light);
     }
 
 
@@ -143,11 +171,11 @@ public class MainActivity extends AppCompatActivity {
     //启动Service
     private void initService() {
         //指定Service
-        Intent intent = new Intent(mContext,WeatherService.class);
+        intent_Service = new Intent(mContext,WeatherService.class);
         //启动WeatherService
-        startService(intent);
+        startService(intent_Service);
         //绑定Service
-        bindService(intent, conn, Context.BIND_AUTO_CREATE);
+        bindService(intent_Service, conn, Context.BIND_AUTO_CREATE);
     }
 
     //ServiceConnection 与Service交互
@@ -401,6 +429,7 @@ public class MainActivity extends AppCompatActivity {
         //关闭当前页面正在进行的请求
         //TODO 关闭请求位置是否正确不确定 可能报错
         JuheData.cancelRequests(mContext);
+        stopService(intent_Service);
         super.onDestroy();
     }
 }

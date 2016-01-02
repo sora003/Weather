@@ -434,12 +434,6 @@ public class WeatherService extends Service {
         return bean;
     }
 
-//    @Override
-//    public void onDestroy() {
-//        super.onDestroy();
-//        Log.v(tag,"onDestroy");
-//    }
-
     //定义WeatherServiceBinder
     public class WeatherServiceBinder extends Binder{
 
