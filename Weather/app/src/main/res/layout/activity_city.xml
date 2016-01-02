@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/tv_back"
             android:textColor="@color/white"
-            android:textSize="30dp"
+            android:textSize="40dp"
             android:text="@string/back"
             android:gravity="center"/>
 

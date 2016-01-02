@@ -48,20 +48,8 @@ public class CityActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
         init();
-        //读取App数据 导入存储的CityList
-
-        //测试代码
-//        List<String> testList = new ArrayList<>();
-//        testList.add("无锡");
-//        testList.add("大浦");
-//        testList.add("上海");
-//        testList.add("北京");
-//        testList.add("南京");
-//        testList.add("重庆");
-//        showCityList(testList);
-//        list = testList;
-
-
+        //TODO 读取App数据 导入存储的CityList
+        //showCityList(getHistoryCityList());
         //TODO 下拉刷新从网上获取城市数据 获取最新的CityList
         getCityList();
 
@@ -77,6 +65,13 @@ public class CityActivity extends AppCompatActivity {
             }
         });
 
+        //返回按钮点击事件
+        tv_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
 
@@ -197,7 +192,19 @@ public class CityActivity extends AppCompatActivity {
         tv_back = (TextView) findViewById(R.id.tv_back);
         //设置返回按钮
         tv_back.setText(R.string.wi_direction_left);
+        tv_back.setTypeface(font);
 
+
+        //测试代码
+//        List<String> testList = new ArrayList<>();
+//        testList.add("无锡");
+//        testList.add("大浦");
+//        testList.add("上海");
+//        testList.add("北京");
+//        testList.add("南京");
+//        testList.add("重庆");
+//        showCityList(testList);
+//        list = testList;
 
     }
 }
