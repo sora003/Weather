@@ -8,4 +8,5 @@
         android:id="@+id/tv_city_i"
         android:textColor="@color/white"
         android:textSize="25dp"/>
+
 </RelativeLayout>

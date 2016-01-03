@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 swipeLayout.setRefreshing(false);
-                weatherService.getCityWeather();
+                initService();
             }
         });
 

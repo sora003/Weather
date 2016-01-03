@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sora.weather.Adapter.CityListAdapter;
+import com.sora.weather.Comparator.CityComparator;
 import com.thinkland.sdk.android.DataCallBack;
 import com.thinkland.sdk.android.JuheData;
 import com.thinkland.sdk.android.Parameters;
@@ -22,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -42,34 +46,54 @@ public class CityActivity extends AppCompatActivity {
 
     private ListView lv_city;
 
+    //Layout
+    private SwipeRefreshLayout swipeLayout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_city);
         init();
+        initListener();
         //TODO 读取App数据 导入存储的CityList
         //showCityList(getHistoryCityList());
         //TODO 下拉刷新从网上获取城市数据 获取最新的CityList
         getCityList();
 
+
+
+
+    }
+
+    private void initListener() {
         //ListView 点击事件监听
         lv_city.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent();
                 //返回城市信息
-                intent.putExtra("city",list.get(position));
+                intent.putExtra("city", list.get(position));
                 setResult(1, intent);
                 finish();
             }
         });
+
 
         //返回按钮点击事件
         tv_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+        //设置下拉刷新 的监听
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                swipeLayout.setRefreshing(false);
+                getCityList();
             }
         });
     }
@@ -168,10 +192,14 @@ public class CityActivity extends AppCompatActivity {
                 }
                 //将集合整体加入list
                 list.addAll(citySet);
+                //对List排序
+                Collections.sort(list,new CityComparator());
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        //TODO 保存list
 
         return list;
     }
@@ -194,6 +222,7 @@ public class CityActivity extends AppCompatActivity {
         tv_back.setText(R.string.wi_direction_left);
         tv_back.setTypeface(font);
 
+        swipeLayout = (SwipeRefreshLayout) findViewById(R.id.swipe_container_city);
 
         //测试代码
 //        List<String> testList = new ArrayList<>();

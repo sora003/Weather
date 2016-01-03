@@ -35,6 +35,7 @@
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true" />
 
+
     </RelativeLayout>
 
 
@@ -45,11 +46,20 @@
         android:paddingTop="40dp"
         android:background="@color/white"/>
 
-
-    <ListView
-        android:id="@+id/lv_ity"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:id="@+id/swipe_container_city">
+
+        <ListView
+            android:id="@+id/lv_ity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 
 
 </LinearLayout>
